@@ -3,7 +3,8 @@
     <item
         android:width="30dp"
         android:height="4dp"
-        android:top="30dp">
+        android:top="32dp"
+        android:left="2.5dp">
         <rotate
             android:fromDegrees="45">
             <shape android:shape="rectangle">
@@ -14,9 +15,10 @@
 
     <item
         android:width="50dp"
-        android:height="5dp"
+        android:height="4dp"
         android:top="25dp"
-        android:left="18dp">
+        android:left="18dp"
+        android:right="20dp">
         <rotate
             android:fromDegrees="-45">
             <shape android:shape="rectangle">
