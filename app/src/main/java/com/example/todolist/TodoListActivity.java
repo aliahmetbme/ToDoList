@@ -1,23 +1,15 @@
 package com.example.todolist;
 
-import static com.example.todolist.R.drawable.btn_background;
 import static com.example.todolist.R.drawable.madde;
-import static com.example.todolist.R.drawable.rounded;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,11 +18,8 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class TodoListActivity extends AppCompatActivity {
     static final int[] count = {0};
@@ -57,33 +44,19 @@ public class TodoListActivity extends AppCompatActivity {
 
         Button addList = findViewById(R.id.addList);
         TextView textView = findViewById(R.id.textView);
-        Button completed = findViewById(R.id.completed);
-        Button save = findViewById(R.id.button3);
 
-        // completing tasks
-        completed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRemoveClick();
-            }
-        });
 
         // adding new tasks
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 textView.setVisibility(View.INVISIBLE);
-                onAddButtonClick(view);
+                addTask();
             }
         });
 
-        // saving to gallery
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCapture();
-            }
-        });
+
+
     }
 
     // adding new tasks
@@ -155,7 +128,7 @@ public class TodoListActivity extends AppCompatActivity {
 
 
                 TextView _textView = new TextView(TodoListActivity.this);
-                EditText editText = customView.findViewById(R.id.addTask);
+                EditText editText = customView.findViewById(R.id.organiseTask);
 
                 TextView textView = findViewById(R.id.textView);
                 LinearLayout list = findViewById(R.id.list);
@@ -190,6 +163,9 @@ public class TodoListActivity extends AppCompatActivity {
                     _textView.setText(task);
                     editText.setText(""); // add yapınca sıfırlanması için
                     textView.setVisibility(View.VISIBLE);
+
+
+
                     list.addView(_textView);
                 }
             }
@@ -205,117 +181,118 @@ public class TodoListActivity extends AppCompatActivity {
         });
     }
 
+    public void addTask(){
 
-    // deleting tasks
-    public void onRemoveClick() {
-
-        LinearLayout list = findViewById(R.id.list);
-
-        View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
+        View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_add, null);
         Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
         scaleOptionDialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
         scaleOptionDialog.setContentView(customView);
         scaleOptionDialog.show();
 
-        Button removeButton = customView.findViewById(R.id.button2);
-        removeButton.setOnClickListener(new View.OnClickListener() {
+        Button delete = customView.findViewById(R.id.cancelButton);
+        Button _addButton = customView.findViewById(R.id.addButton);
+
+        LinearLayout taskList = findViewById(R.id.list);
+        EditText taskToAddList = customView.findViewById(R.id.organiseTask);
+
+        TextView newTask = new TextView(TodoListActivity.this);
+
+        _addButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                EditText editText = customView.findViewById(R.id.numberCompleted);
-                int count;
-                try {
-                    count = Integer.parseInt(editText.getText().toString().trim());
-                    View child = list.getChildAt((count - 1));
-                    list.removeView(child);
-                    if (list.getChildCount() != 0) {
-                        Toast.makeText(TodoListActivity.this, "You completed the task congratulations \n you have " + String.valueOf(list.getChildCount()) + " tasks good luck", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(TodoListActivity.this, "You completed all tasks congratulations \n you can add new tasks", Toast.LENGTH_LONG).show();
-                    }
+            public void onClick(View v) {
+                if (newTask.equals("")) {
+                    Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
+                } else {
+                    String task = taskToAddList.getText().toString();
+                    newTask.setText(task);
 
-                    int newCount = 1;
-                    String newTask;
-                    TextView task;
+                    newTask.setTextColor(Color.parseColor("#000000"));
+                    newTask.setBackground(getDrawable(R.drawable.madde));
+                    newTask.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF3700B3")));
 
-                    // after deleting order tasks again
-                    for (int i = 0; i < list.getChildCount(); i++) {
-                        task = (TextView) list.getChildAt(i);
-                        String[] taskParts = task.getText().toString().split(" ");
-                        newTask = String.valueOf(newCount) + " " + taskParts[1] + " " + taskParts[2];
-                        task.setText(newTask);
-                        newCount++;
-                        complete = true;
-                    }
+
+                    newTask.setVisibility(View.VISIBLE);
+                    newTask.setClickable(true);
+                    newTask.setFocusable(true);
+
+                    taskList.addView(newTask);
+                    newTask.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
+                            Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
+                            scaleOptionDialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
+                            scaleOptionDialog.setContentView(customView);
+                            scaleOptionDialog.show();
+
+                        }
+                    });
+
                     scaleOptionDialog.hide();
 
-                } catch (java.lang.NumberFormatException e) {
-                    Toast.makeText(TodoListActivity.this, "Pleas Enter the task number", Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+            // taking screenShoot
+            public void onCapture() {
+
+                LinearLayout list = findViewById(R.id.list);
+
+                list.setDrawingCacheEnabled(true);
+                Bitmap listBitmap = Bitmap.createBitmap(list.getDrawingCache());
+
+                Canvas combinedCanvas = new Canvas(listBitmap);
+                combinedCanvas.drawBitmap(listBitmap, 0, 0, null);
+
+                saveImage(listBitmap);
+                list.setDrawingCacheEnabled(false);
+            }
+
+            protected void saveImage(Bitmap bitmap) {
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
+
+                String folderName = "DCIM/TO-DO-LIST";
+
+                File folder = new File(Environment.getExternalStorageDirectory() + "/" + folderName);
+
+                if (!folder.exists()) {
+                    folder.mkdirs();
                 }
 
+                // Naming image
+                String fileName = String.format("%s_Your_List.png", sdf);
 
+                // saving photo
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+                    values.put(MediaStore.Images.Media.RELATIVE_PATH, folderName);
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        Toast.makeText(TodoListActivity.this, " Your plan is saved ", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(TodoListActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
-        });
 
-    }
-
-    // taking screenShoot
-    public void onCapture() {
-
-        LinearLayout list = findViewById(R.id.list);
-
-        list.setDrawingCacheEnabled(true);
-        Bitmap listBitmap = Bitmap.createBitmap(list.getDrawingCache());
-
-        Canvas combinedCanvas = new Canvas(listBitmap);
-        combinedCanvas.drawBitmap(listBitmap, 0, 0, null);
-
-        saveImage(listBitmap);
-        list.setDrawingCacheEnabled(false);
-    }
-
-    protected void saveImage(Bitmap bitmap) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
-
-        String folderName = "DCIM/TO-DO-LIST";
-
-        File folder = new File(Environment.getExternalStorageDirectory() + "/" + folderName);
-
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-
-        // Naming image
-        String fileName = String.format("%s_Your_List.png", sdf);
-
-        // saving photo
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-            values.put(MediaStore.Images.Media.RELATIVE_PATH, folderName);
-            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                Toast.makeText(this, " Your plan is saved ", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    // requesting
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode,permission,grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent photo = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(photo,2);
-            }
-        }
-    }
-}
+//            // requesting
+//            @Override
+//            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
+//                super.onRequestPermissionsResult(requestCode,permission,grantResults);
+//
+//                if (requestCode == 1) {
+//                    if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                        Intent photo = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                        startActivityForResult(photo,2);
+//                    }
+//                }
+//            }
+       });}}

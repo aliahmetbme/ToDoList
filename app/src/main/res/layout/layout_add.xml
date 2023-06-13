@@ -7,8 +7,8 @@
     >
 
     <LinearLayout
-        android:layout_width="270dp"
-        android:layout_height="378dp"
+        android:layout_width="313dp"
+        android:layout_height="524dp"
         android:background="@drawable/madde"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,34 +19,33 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="205dp"
+            android:layout_width="248dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="33dp"
             android:background="@drawable/madde"
             android:backgroundTint="@color/white"
             android:gravity="center"
-            android:text="ADD YOUR TASK"
+            android:text="ORGANISE YOUR TASK"
             android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/addTask"
+            android:id="@+id/organiseTask"
             android:layout_width="252dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="25dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/rounded"
             android:backgroundTint="#E8E3E3"
-            android:textColor="@color/white"
             android:ems="10"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text=""
+            android:textColor="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
-
 
 
         <LinearLayout
@@ -64,18 +63,18 @@
 
             <Button
                 android:id="@+id/yesil"
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:backgroundTint="#8BC34A"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <Button
                 android:id="@+id/orange"
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:backgroundTint="#FF5722"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -96,9 +95,9 @@
 
             <Button
                 android:id="@+id/blue"
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:backgroundTint="#00BCD4"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,9 +106,9 @@
 
             <Button
                 android:id="@+id/sonrenk"
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:backgroundTint="#FF5722"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -118,16 +117,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="150dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="7.5dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_background"
                 android:minHeight="48dp"
@@ -140,14 +139,14 @@
                 android:id="@+id/addButton"
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="7.5dp"
+                android:layout_marginRight="25dp"
                 android:background="@drawable/btn_background"
                 android:minHeight="48dp"
-                android:text="ADD"
-                app:backgroundTint="#b197fc"
+                android:text="set"
                 android:textColor="@color/white"
+                app:backgroundTint="#b197fc"
                 tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
 
