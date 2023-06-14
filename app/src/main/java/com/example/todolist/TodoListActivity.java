@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import static com.example.todolist.R.drawable.madde;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -10,16 +11,19 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +54,6 @@ public class TodoListActivity extends AppCompatActivity {
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textView.setVisibility(View.INVISIBLE);
                 addTask();
             }
         });
@@ -199,24 +202,47 @@ public class TodoListActivity extends AppCompatActivity {
 
         _addButton.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
                 if (newTask.equals("")) {
                     Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
                 } else {
-                    String task = taskToAddList.getText().toString();
+                    String task =   taskToAddList.getText().toString() ;
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, // genişlik
+                             LinearLayout.LayoutParams.MATCH_PARENT + 300// yükseklik
+                    );
+
+                    int additionalPadding = 16;
                     newTask.setText(task);
 
-                    newTask.setTextColor(Color.parseColor("#000000"));
-                    newTask.setBackground(getDrawable(R.drawable.madde));
+                    int paddingLeft = newTask.getPaddingLeft();
+                    int paddingTop = newTask.getPaddingTop();
+                    int paddingRight = newTask.getPaddingRight();
+                    int paddingBottom = newTask.getPaddingBottom();
+
+                    newTask.setPadding(paddingLeft + additionalPadding, paddingTop, paddingRight, paddingBottom);
+
+                    layoutParams.setMargins(20, 40, 20, 1);
+
+
+                    newTask.setPadding(15, 10, 190, 1);
+                    newTask.setCompoundDrawablePadding(10000000);
+                    newTask.setLayoutParams(layoutParams);
+                    newTask.setTextSize(20);
+                    newTask.setTextColor(Color.WHITE);
+                    newTask.setBackground(getDrawable(madde));
                     newTask.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF3700B3")));
-
-
+                    newTask.getAutoSizeMaxTextSize();
+                    newTask.setMovementMethod(new ScrollingMovementMethod());
                     newTask.setVisibility(View.VISIBLE);
                     newTask.setClickable(true);
                     newTask.setFocusable(true);
 
                     taskList.addView(newTask);
+
                     newTask.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

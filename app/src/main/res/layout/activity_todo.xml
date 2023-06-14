@@ -9,15 +9,16 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="404dp"
-        android:layout_height="652dp"
+        android:layout_width="410dp"
+        android:layout_height="742dp"
 
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
@@ -41,21 +42,21 @@
         app:layout_constraintHorizontal_bias="0.422"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="178dp"
-        android:layout_height="42dp"
+        android:layout_width="134dp"
+        android:layout_height="49dp"
         android:text="  TASKS"
         android:textColor="#536DFE"
         android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.017"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.046" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

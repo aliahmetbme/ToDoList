@@ -7,8 +7,8 @@
     >
 
     <LinearLayout
-        android:layout_width="313dp"
-        android:layout_height="524dp"
+        android:layout_width="329dp"
+        android:layout_height="513dp"
         android:background="@drawable/madde"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,36 +17,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.302">
 
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="248dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:background="@drawable/madde"
-            android:backgroundTint="@color/white"
-            android:gravity="center"
-            android:text="ORGANISE YOUR TASK"
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:text="NEW TASK"
+            android:textColor="@color/white"
+            android:textSize="25dp" />
 
         <EditText
             android:id="@+id/organiseTask"
-            android:layout_width="252dp"
+            android:layout_width="308dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/rounded"
-            android:backgroundTint="#E8E3E3"
-            android:ems="10"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text=""
             android:textColor="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,7 +124,7 @@
                 android:minHeight="48dp"
                 android:text="CANCEL"
                 android:textColor="@color/white"
-                app:backgroundTint="#b197fc"
+                app:backgroundTint="#2D02AA"
                 tools:ignore="TouchTargetSizeCheck" />
 
             <Button
@@ -144,9 +136,9 @@
                 android:layout_marginRight="25dp"
                 android:background="@drawable/btn_background"
                 android:minHeight="48dp"
-                android:text="set"
+                android:text="ADD"
                 android:textColor="@color/white"
-                app:backgroundTint="#b197fc"
+                app:backgroundTint="#2D02AA"
                 tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
 
