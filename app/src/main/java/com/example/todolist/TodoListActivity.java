@@ -22,9 +22,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 
 public class TodoListActivity extends AppCompatActivity {
@@ -74,56 +78,6 @@ public class TodoListActivity extends AppCompatActivity {
         Button _addButton = customView.findViewById(R.id.addButton);
         Button cancelButton = customView.findViewById(R.id.cancelButton);
 
-        // to give colors to tasks
-        Button redButton = customView.findViewById(R.id.red);
-        Button yesilButton = customView.findViewById(R.id.yesil);
-        Button orangeButton = customView.findViewById(R.id.orange);
-        Button yellowButton = customView.findViewById(R.id.yellow);
-        Button blueButton = customView.findViewById(R.id.blue);
-        Button sonrenkButton = customView.findViewById(R.id.sonrenk);
-
-        final String[] taskColor = new String[1];
-        redButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#F81212";
-            }
-        });
-
-        yesilButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#8BC34A";
-            }
-        });
-
-        orangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#FF5722";
-            }
-        });
-
-        yellowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#FFEB3B";
-            }
-        });
-
-        blueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#00BCD4";
-            }
-        });
-
-        sonrenkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskColor[0] = "#FF5722";
-            }
-        });
 
         _addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,11 +95,7 @@ public class TodoListActivity extends AppCompatActivity {
                 _textView.setTextColor(Color.parseColor("#000000"));
                 _textView.setBackground(getDrawable(madde));
 
-                if (taskColor[0] == null) {
-                    taskColor[0] = "#c6e2ff";
-                }
 
-                _textView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(taskColor[0])));
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, // genişlik
@@ -196,9 +146,18 @@ public class TodoListActivity extends AppCompatActivity {
         Button _addButton = customView.findViewById(R.id.addButton);
 
         LinearLayout taskList = findViewById(R.id.list);
-        EditText taskToAddList = customView.findViewById(R.id.organiseTask);
 
-        TextView newTask = new TextView(TodoListActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(this);  // LayoutInflater oluşturun
+        View view = inflater.inflate(R.layout.task,taskList,false); // XML dosyasını LinearLayout'a ekle
+
+        EditText taskToAddList = customView.findViewById(R.id.organiseTask);
+        EditText notesToAddList = customView.findViewById(R.id.organiseNotes);
+
+
+        TextView newTask = view.findViewById(R.id.myTask);
+        TextView newNote = view.findViewById(R.id.notes);
+        ImageView imageView = view.findViewById(R.id.taskImage);
+        Switch x = view.findViewById(R.id.switch1);
 
         _addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -209,41 +168,47 @@ public class TodoListActivity extends AppCompatActivity {
                     Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
                 } else {
                     String task =   taskToAddList.getText().toString() ;
+                    String notes = notesToAddList.getText().toString();
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, // genişlik
-                             LinearLayout.LayoutParams.MATCH_PARENT + 300// yükseklik
-                    );
-
-                    int additionalPadding = 16;
                     newTask.setText(task);
+                    newTask.setPadding(16,5,10,10);
 
-                    int paddingLeft = newTask.getPaddingLeft();
-                    int paddingTop = newTask.getPaddingTop();
-                    int paddingRight = newTask.getPaddingRight();
-                    int paddingBottom = newTask.getPaddingBottom();
+                    newNote.setText(notes);
+                    newNote.setPadding(16,5,10,10);
 
-                    newTask.setPadding(paddingLeft + additionalPadding, paddingTop, paddingRight, paddingBottom);
+                    view.setClickable(true);
 
-                    layoutParams.setMargins(20, 40, 20, 1);
-
-
-                    newTask.setPadding(15, 10, 190, 1);
-                    newTask.setCompoundDrawablePadding(10000000);
-                    newTask.setLayoutParams(layoutParams);
-                    newTask.setTextSize(20);
+                    newTask.setTextSize(25);
                     newTask.setTextColor(Color.WHITE);
-                    newTask.setBackground(getDrawable(madde));
-                    newTask.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF3700B3")));
+
+                    newNote.setTextSize(20);
+                    newNote.setTextColor(Color.WHITE);
+
                     newTask.getAutoSizeMaxTextSize();
                     newTask.setMovementMethod(new ScrollingMovementMethod());
+                    newNote.setMovementMethod(new ScrollingMovementMethod());
                     newTask.setVisibility(View.VISIBLE);
-                    newTask.setClickable(true);
-                    newTask.setFocusable(true);
+                    newNote.setVisibility(View.VISIBLE);
 
-                    taskList.addView(newTask);
+                    taskList.addView(view);
 
-                    newTask.setOnClickListener(new View.OnClickListener() {
+                    x.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked){
+                              //  view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF3700B3")));
+                                view.setAlpha(0.3f);
+                                x.setAlpha(1);
+
+                            } else {
+                                view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF03DAC5")));
+                                view.setAlpha(1);
+
+                            }
+                        }
+                    });
+
+                    view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
@@ -252,6 +217,13 @@ public class TodoListActivity extends AppCompatActivity {
                             scaleOptionDialog.setContentView(customView);
                             scaleOptionDialog.show();
 
+                        }
+                    });
+
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(TodoListActivity.this,"Hello you clicked me",Toast.LENGTH_LONG).show();
                         }
                     });
 

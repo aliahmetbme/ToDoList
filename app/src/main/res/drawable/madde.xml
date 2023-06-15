@@ -10,7 +10,6 @@
         android:endColor="#25327E"
         android:angle="70"/>
 
-
     <padding
         android:bottom="10dp"
         android:left="10dp"

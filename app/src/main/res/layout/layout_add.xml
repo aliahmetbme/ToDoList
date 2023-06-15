@@ -27,12 +27,14 @@
             android:textColor="@color/white"
             android:textSize="25dp" />
 
+
+
         <EditText
             android:id="@+id/organiseTask"
             android:layout_width="308dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/rounded"
             android:inputType="textPersonName"
             android:minHeight="48dp"
@@ -40,76 +42,21 @@
             android:textColor="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/organiseNotes"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
+            android:layout_height="273dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/rounded"
+            android:minHeight="48dp"
 
-            <Button
-                android:id="@+id/red"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:backgroundTint="#F81212"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <Button
-                android:id="@+id/yesil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                app:backgroundTint="#8BC34A"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <Button
-                android:id="@+id/orange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                app:backgroundTint="#FF5722"
-                tools:ignore="SpeakableTextPresentCheck" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/yellow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:backgroundTint="#FFEB3B"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <Button
-                android:id="@+id/blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                app:backgroundTint="#00BCD4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <Button
-                android:id="@+id/sonrenk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                app:backgroundTint="#FF5722"
-                tools:ignore="SpeakableTextPresentCheck" />
-        </LinearLayout>
+            android:text=""
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <Button
@@ -143,6 +90,8 @@
 
 
         </LinearLayout>
+
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
