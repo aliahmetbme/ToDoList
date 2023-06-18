@@ -7,58 +7,87 @@
     android:background="@color/black">
 
     <LinearLayout
-        android:layout_width="272dp"
-        android:layout_height="351dp"
+        android:layout_width="329dp"
+        android:layout_height="513dp"
         android:background="@drawable/madde"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.302">
 
         <TextView
-            android:id="@+id/complated"
-            android:layout_width="227dp"
-            android:layout_height="92dp"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:id="@+id/textView2"
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@drawable/madde"
-            android:backgroundTint="#b9d3ee"
-            android:text=" PLEASE ENTER THE  NUMBER OF TASK THAT  YOU COMPLETED"
+            android:text="EDIT YOUR TASK"
             android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/numberCompleted"
-            android:layout_width="192dp"
-            android:layout_height="54dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/btn_background"
-            android:backgroundTint="#b9d3ee"
-            android:ems="10"
-            android:inputType="numberDecimal"
+            android:id="@+id/editTask"
+            android:layout_width="308dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:text=""
             android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="166dp"
-            android:layout_height="51dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/btn_background"
-            android:backgroundTint="#b9d3ee"
-            android:text="Complete"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/editNotes"
+            android:layout_width="match_parent"
+            android:layout_height="273dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/rounded"
+            android:minHeight="48dp"
+            android:gravity="top"
+            android:text=""
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_background"
+                android:minHeight="48dp"
+                android:text="DELETE"
+                android:textColor="@color/white"
+                app:backgroundTint="#2D02AA"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/btn_background"
+                android:minHeight="48dp"
+                android:text="EDIT"
+                android:textColor="@color/white"
+                app:backgroundTint="#2D02AA"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+
+        </LinearLayout>
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

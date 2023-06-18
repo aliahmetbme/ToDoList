@@ -22,7 +22,7 @@
         android:color="#FF9800" />
 
     <corners
-        android:radius="1111111dp" />
+        android:radius="11dp" />
 
     <gradient
         android:centerColor="#FF9800"

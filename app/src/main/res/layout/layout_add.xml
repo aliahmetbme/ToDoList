@@ -7,8 +7,8 @@
     >
 
     <LinearLayout
-        android:layout_width="329dp"
-        android:layout_height="513dp"
+        android:layout_width="348dp"
+        android:layout_height="516dp"
         android:background="@drawable/madde"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,6 @@
             android:textSize="25dp" />
 
 
-
         <EditText
             android:id="@+id/organiseTask"
             android:layout_width="308dp"
@@ -44,19 +43,51 @@
 
         <EditText
             android:id="@+id/organiseNotes"
-            android:layout_width="match_parent"
-            android:layout_height="273dp"
+            android:layout_width="307dp"
+            android:layout_height="162dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/rounded"
+            android:gravity="top"
             android:minHeight="48dp"
-
             android:text=""
             android:textColor="@color/white" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/minute"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:background="@drawable/rounded"
+                android:ems="10"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/second"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="38dp"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:background="@drawable/rounded"
+                android:ems="10"
+                android:inputType="phone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="309dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="45dp"
             android:orientation="horizontal">
 
             <Button
@@ -64,7 +95,7 @@
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_background"
@@ -79,7 +110,7 @@
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginRight="25dp"
                 android:background="@drawable/btn_background"
                 android:minHeight="48dp"
@@ -90,7 +121,6 @@
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>

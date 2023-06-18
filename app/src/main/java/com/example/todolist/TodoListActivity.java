@@ -1,33 +1,47 @@
 package com.example.todolist;
 
 import static com.example.todolist.R.drawable.madde;
+import static com.example.todolist.R.drawable.reset;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,10 +53,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.List;
+
 
 public class TodoListActivity extends AppCompatActivity {
-    static final int[] count = {0};
-    static boolean complete = false;
+
+    Vibrator vibrator = null;
+    MediaPlayer mediaPlayer = null;
+    public static boolean isRunning ;
+    public static int count;
+    static Handler handler = new Handler();
+    MyDatabaseHelper dbHelper = new MyDatabaseHelper(this);
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,89 +77,17 @@ public class TodoListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todo);
 
         Button addList = findViewById(R.id.addList);
-        TextView textView = findViewById(R.id.textView);
 
-
-        // adding new tasks
+         // adding new tasks
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addTask();
             }
         });
-
-
-
     }
 
     // adding new tasks
-    public void onAddButtonClick(View view) {
-
-        View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_add, null);
-        Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
-        scaleOptionDialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
-        scaleOptionDialog.setContentView(customView);
-        scaleOptionDialog.show();
-
-        Button _addButton = customView.findViewById(R.id.addButton);
-        Button cancelButton = customView.findViewById(R.id.cancelButton);
-
-
-        _addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                TextView _textView = new TextView(TodoListActivity.this);
-                EditText editText = customView.findViewById(R.id.organiseTask);
-
-                TextView textView = findViewById(R.id.textView);
-                LinearLayout list = findViewById(R.id.list);
-
-
-                String job = editText.getText().toString();
-                _textView.setTextColor(Color.parseColor("#000000"));
-                _textView.setBackground(getDrawable(madde));
-
-
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, // genişlik
-                        LinearLayout.LayoutParams.WRAP_CONTENT // yükseklik
-                );
-                layoutParams.setMargins(8, 25, 8, 1);
-                layoutParams.gravity = Gravity.CENTER;
-                _textView.setPadding(50, 1, 1, 1);
-                _textView.setLayoutParams(layoutParams);
-                count[0]++;
-                if (complete) count[0] = list.getChildCount() + 1;
-                complete = false;
-                _textView.setTextSize(24);
-                String task = String.valueOf(count[0]) + " ---> " + job;
-                if (job.equals("")) {
-                    Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
-                } else {
-                    _textView.setText(task);
-                    editText.setText(""); // add yapınca sıfırlanması için
-                    textView.setVisibility(View.VISIBLE);
-
-
-
-                    list.addView(_textView);
-                }
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextView textView = findViewById(R.id.textView);
-                textView.setVisibility(View.VISIBLE);
-                scaleOptionDialog.hide();
-            }
-        });
-    }
-
     public void addTask(){
 
         View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_add, null);
@@ -142,7 +96,7 @@ public class TodoListActivity extends AppCompatActivity {
         scaleOptionDialog.setContentView(customView);
         scaleOptionDialog.show();
 
-        Button delete = customView.findViewById(R.id.cancelButton);
+        Button cancel = customView.findViewById(R.id.cancelButton);
         Button _addButton = customView.findViewById(R.id.addButton);
 
         LinearLayout taskList = findViewById(R.id.list);
@@ -153,11 +107,107 @@ public class TodoListActivity extends AppCompatActivity {
         EditText taskToAddList = customView.findViewById(R.id.organiseTask);
         EditText notesToAddList = customView.findViewById(R.id.organiseNotes);
 
+        EditText minuteAdd = customView.findViewById(R.id.minute);
+        EditText secondAdd = customView.findViewById(R.id.second);
 
         TextView newTask = view.findViewById(R.id.myTask);
         TextView newNote = view.findViewById(R.id.notes);
-        ImageView imageView = view.findViewById(R.id.taskImage);
+        ImageButton startButton = view.findViewById(R.id.timerStar);
+        ImageButton stopButton = view.findViewById(R.id.timerStop);
+        ImageButton resetButton = view.findViewById(R.id.timerReset);
+        TextView counter = view.findViewById(R.id.counter);
+
+        if (counter.equals("00:00")) {
+            startButton.setEnabled(false);
+        }
+
+        // ImageView imageView = view.findViewById(R.id.taskImage);
         Switch x = view.findViewById(R.id.switch1);
+
+        count = 0;
+        isRunning =false;
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
+
+
+                String minute = counter.getText().toString().split(":")[0];
+                String second = counter.getText().toString().split(":")[1];
+                Toast.makeText(TodoListActivity.this ,  counter.getText().toString() + " caunt " ,Toast.LENGTH_LONG).show();
+
+
+                //Toast.makeText(TodoListActivity.this , minute + " minute " + second + " second " ,Toast.LENGTH_LONG).show();
+
+                try {
+                    if(second.equals("")){
+                        second="0";
+                    }
+                    int value = Integer.parseInt(minute.trim())* 60 * 1000+ Integer.parseInt(second.trim()) * 1000;
+                    //    Toast.makeText(TodoListActivity.this , value + " value " ,Toast.LENGTH_LONG).show();
+
+                    CountDownTimer countDownTime = new CountDownTimer(value ,1000){
+                        @SuppressLint("SetTextI18n")
+                        public void onTick(long millisUntilFinished){
+
+                            long time = millisUntilFinished / 1000;
+
+                            //Toast.makeText(TodoListActivity.this , time + "time " ,Toast.LENGTH_LONG).show();
+
+
+                            long minuteValue =  time / 60;
+                            long secondValue =  time % 60;
+
+                            if (minuteValue < 10 && secondValue < 10){
+                                counter.setText( "0"+ minuteValue + " : 0" + secondValue);
+                            } else if(minuteValue < 10 ){
+                                counter.setText( "0"+ minuteValue + " : " + secondValue);
+                            } else if ( secondValue < 10){
+                                counter.setText(minuteValue + " : 0" + secondValue);
+                            } else {
+                                counter.setText(minuteValue + " : " + secondValue);
+                            }
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            counter.setText("00:00");
+                            startButton.setEnabled(true);
+                            alertSound();
+                            alertVib();
+                        }
+
+                    }.start();
+
+
+                    stopButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startButton.setEnabled(true);
+                            resetButton.setEnabled(true);
+                            countDownTime.cancel();
+                        }
+                    });
+
+                    resetButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            countDownTime.cancel();
+                            stopButton.setEnabled(false);
+                            counter.setText("00:00");
+                        }
+                    });
+
+
+                } catch (Exception e){
+                    Toast.makeText(TodoListActivity.this,"You didn't give the time correctly",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
         _addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -165,16 +215,45 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (newTask.equals("")) {
+
                     Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
+
                 } else {
-                    String task =   taskToAddList.getText().toString() ;
+
+
+                    String task = taskToAddList.getText().toString() ;
                     String notes = notesToAddList.getText().toString();
+
+                    int minuteValue = Integer.parseInt(minuteAdd.getText().toString());
+                    int secondValue = Integer.parseInt(secondAdd.getText().toString());
 
                     newTask.setText(task);
                     newTask.setPadding(16,5,10,10);
 
                     newNote.setText(notes);
                     newNote.setPadding(16,5,10,10);
+
+                    try {
+
+                        if (secondValue > 60){
+                            minuteValue += secondValue / 60;
+                            secondValue = secondValue % 60;
+                        }
+
+
+                        if (minuteValue < 10 && secondValue < 10){
+                            counter.setText( "0"+ minuteValue + " : 0" + secondValue);
+                        } else if(minuteValue < 10 ){
+                            counter.setText( "0"+ minuteValue + " : " + secondValue);
+                        } else if (secondValue < 10){
+                            counter.setText(minuteValue + " : 0" + secondValue);
+                        } else {
+                            counter.setText(minuteValue + " : " + secondValue);
+                        }
+                    } catch (Exception e ) {
+                        counter.setText(minuteValue + " : " + secondValue);
+
+                    }
 
                     view.setClickable(true);
 
@@ -185,8 +264,10 @@ public class TodoListActivity extends AppCompatActivity {
                     newNote.setTextColor(Color.WHITE);
 
                     newTask.getAutoSizeMaxTextSize();
+
                     newTask.setMovementMethod(new ScrollingMovementMethod());
                     newNote.setMovementMethod(new ScrollingMovementMethod());
+
                     newTask.setVisibility(View.VISIBLE);
                     newNote.setVisibility(View.VISIBLE);
 
@@ -211,86 +292,87 @@ public class TodoListActivity extends AppCompatActivity {
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
-                            Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
-                            scaleOptionDialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
-                            scaleOptionDialog.setContentView(customView);
-                            scaleOptionDialog.show();
+                            Dialog move = new Dialog(TodoListActivity.this);
+                            move.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
+                            move.setContentView(customView);
+                            move.show();
 
+                            EditText editTaskToAddList = customView.findViewById(R.id.editTask);
+                            EditText editNotesToAddList = customView.findViewById(R.id.editNotes);
+
+                            String previousTask = newTask.getText().toString();
+                            String previousNotes = newNote.getText().toString();
+
+                            editTaskToAddList.setText(previousTask);
+                            editNotesToAddList.setText(previousNotes);
+
+                            Button editButton = customView.findViewById(R.id.editButton);
+                            Button deleteButton = customView.findViewById(R.id.deleteButton);
+
+                            editButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertSound();
+                                    alertVib();
+
+                                    String editedTask  = editTaskToAddList.getText().toString();
+                                    String editedNotes = editNotesToAddList.getText().toString();
+
+                                    newTask.setText(editedTask);
+                                    newTask.setPadding(16,5,10,10);
+
+                                    newNote.setText(editedNotes);
+                                    newNote.setPadding(16,5,10,10);
+                                    Toast.makeText(TodoListActivity.this, " Your task was edited ", Toast.LENGTH_LONG).show();
+                                    move.hide();
+                                }
+                            });
+
+                            deleteButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(TodoListActivity.this, newTask.getText().toString() + " were remoted", Toast.LENGTH_LONG).show();
+                                    taskList.removeView(view);
+                                    move.hide();
+                                }
+                            });
                         }
                     });
 
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(TodoListActivity.this,"Hello you clicked me",Toast.LENGTH_LONG).show();
-                        }
-                    });
+//                    imageView.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(TodoListActivity.this,"Hello you clicked me",Toast.LENGTH_LONG).show();
+//                        }
+//                    });
 
                     scaleOptionDialog.hide();
-
-                }
-            }
-
-
-            // taking screenShoot
-            public void onCapture() {
-
-                LinearLayout list = findViewById(R.id.list);
-
-                list.setDrawingCacheEnabled(true);
-                Bitmap listBitmap = Bitmap.createBitmap(list.getDrawingCache());
-
-                Canvas combinedCanvas = new Canvas(listBitmap);
-                combinedCanvas.drawBitmap(listBitmap, 0, 0, null);
-
-                saveImage(listBitmap);
-                list.setDrawingCacheEnabled(false);
-            }
-
-            protected void saveImage(Bitmap bitmap) {
-
-                SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
-
-                String folderName = "DCIM/TO-DO-LIST";
-
-                File folder = new File(Environment.getExternalStorageDirectory() + "/" + folderName);
-
-                if (!folder.exists()) {
-                    folder.mkdirs();
                 }
 
-                // Naming image
-                String fileName = String.format("%s_Your_List.png", sdf);
-
-                // saving photo
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
-                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-                    values.put(MediaStore.Images.Media.RELATIVE_PATH, folderName);
-                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                        Toast.makeText(TodoListActivity.this, " Your plan is saved ", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(TodoListActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        scaleOptionDialog.hide();
                     }
-                }
+                });
             }
+       });
 
+   }
 
-//            // requesting
-//            @Override
-//            public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
-//                super.onRequestPermissionsResult(requestCode,permission,grantResults);
-//
-//                if (requestCode == 1) {
-//                    if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                        Intent photo = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                        startActivityForResult(photo,2);
-//                    }
-//                }
-//            }
-       });}}
+    public void alertSound() {
+
+        mediaPlayer = MediaPlayer.create(TodoListActivity.this,R.raw.alarm); // ses çıkarmak için
+
+        mediaPlayer.seekTo(0);
+        mediaPlayer.start();
+    }
+
+    public void alertVib(){
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(VibrationEffect.createOneShot(10000,VibrationEffect.DEFAULT_AMPLITUDE));
+    }
+}
