@@ -4,124 +4,208 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="#4F97A3">
 
-    <LinearLayout
-        android:layout_width="348dp"
-        android:layout_height="516dp"
-        android:background="@drawable/madde"
-        android:orientation="vertical"
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="265dp"
+        android:layout_height="90dp"
+        android:text="CREATE \nNEW TASK"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.109"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.097"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/organiseTask"
+        android:layout_width="359dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#cfe8ef"
+        android:background="@drawable/rounded_corners"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="Title"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.302">
+        app:layout_constraintVertical_bias="0.227"
+        tools:ignore="MissingConstraints" />
 
+    <EditText
+        android:id="@+id/organiseNotes"
+        android:layout_width="359dp"
+        android:layout_height="62dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="#cfe8ef"
+        android:gravity="top"
+        android:minHeight="48dp"
+        android:text="Notes "
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.31" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="248dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="NEW TASK"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="226dp"
+        android:layout_height="43dp"
+        android:text="SET CHRONOMETER "
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.735" />
 
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="320dp"
+        android:layout_height="195dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="#70c1b3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.564" />
 
-        <EditText
-            android:id="@+id/organiseTask"
-            android:layout_width="308dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text=""
-            android:textColor="@color/white"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <EditText
-            android:id="@+id/organiseNotes"
-            android:layout_width="307dp"
-            android:layout_height="162dp"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/rounded"
-            android:gravity="top"
-            android:minHeight="48dp"
-            android:text=""
-            android:textColor="@color/white" />
+    <LinearLayout
+        android:layout_width="259dp"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.821">
 
         <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_width="122dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:text="MINUTE "
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/minute"
-                android:layout_width="74dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginRight="8dp"
-                android:textColor="@color/white"
+                android:layout_width="95dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/rounded"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#cfe8ef"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textSize="8dp" />
 
-            <EditText
-                android:id="@+id/second"
-                android:layout_width="74dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginRight="38dp"
-                android:textColor="@color/white"
-                android:layout_weight="1"
-                android:background="@drawable/rounded"
-                android:ems="10"
-                android:inputType="phone" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="309dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="45dp"
-            android:orientation="horizontal">
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="115dp"
+            <TextView
+                android:id="@+id/secondd"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_background"
-                android:minHeight="48dp"
-                android:text="CANCEL"
+                android:layout_marginLeft="22dp"
+                android:gravity="center"
+                android:text="SECOND "
                 android:textColor="@color/white"
-                app:backgroundTint="#2D02AA"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/addButton"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
+            <EditText
+                android:id="@+id/second"
+                android:layout_width="95dp"
+                android:layout_height="38dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="25dp"
-                android:background="@drawable/btn_background"
-                android:minHeight="48dp"
-                android:text="ADD"
-                android:textColor="@color/white"
-                app:backgroundTint="#2D02AA"
-                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#cfe8ef"
+                android:ems="10"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textSize="8dp" />
         </LinearLayout>
-
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="226dp"
+        android:layout_height="43dp"
+        android:text="SET DATE "
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.386" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="253dp"
+        android:layout_height="52dp"
+        android:background="@drawable/btn_background"
+        android:drawableLeft="@drawable/plus"
+        android:drawablePadding="0dp"
+        android:gravity="center_vertical"
+        android:paddingStart="18dp"
+        android:text="CREATE TASK "
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:backgroundTint="#70c1b3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.959"
+        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_weight="1"
+        android:background="@drawable/ic_arrow_left_svgrepo_com"
+        app:backgroundTint="#EDECEF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TouchTargetSizeCheck" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

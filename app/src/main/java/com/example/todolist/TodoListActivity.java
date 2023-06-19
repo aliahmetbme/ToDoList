@@ -18,6 +18,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,30 +27,39 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 
 public class TodoListActivity extends AppCompatActivity {
 
+
     Vibrator vibrator = null;
     MediaPlayer mediaPlayer = null;
     DatabaseHelper dbHelper ;
     ContentValues values = new ContentValues();
+    CalendarView calendarView ;
+    String Day, Month, Year;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
 
         Button addList = findViewById(R.id.addList);
         dbHelper = new DatabaseHelper(this);
-        getTasks();
+        getTasks(); // when app is turned on databased go out to information
 
         // adding new tasks
         addList.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +71,8 @@ public class TodoListActivity extends AppCompatActivity {
     }
 
     // adding new tasks
-    public void addTask(){
+    public  void addTask(){
+
 
         View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_add, null);
         Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
@@ -80,22 +91,22 @@ public class TodoListActivity extends AppCompatActivity {
         EditText taskToAddList = customView.findViewById(R.id.organiseTask);
         EditText notesToAddList = customView.findViewById(R.id.organiseNotes);
 
-        EditText minuteAdd = customView.findViewById(R.id.minute);
-        EditText secondAdd = customView.findViewById(R.id.second);
+        EditText minuteAdd = customView.findViewById(R.id.minute); // layout add'deki edittext
+        EditText secondAdd = customView.findViewById(R.id.second); // layout add'deki edittext
+        calendarView = customView.findViewById(R.id.calendarView);
 
-        TextView newTask = view.findViewById(R.id.myTask);
-        TextView newNote = view.findViewById(R.id.notes);
-        ImageButton startButton = view.findViewById(R.id.timerStar);
-        ImageButton stopButton = view.findViewById(R.id.timerStop);
-        ImageButton resetButton = view.findViewById(R.id.timerReset);
-        TextView counter = view.findViewById(R.id.counter);
+        TextView newTask = view.findViewById(R.id.myTask); // taskview
+        TextView newNote = view.findViewById(R.id.notes); // taskview
+        ImageButton startButton = view.findViewById(R.id.timerStar); // taskview
+        ImageButton stopButton = view.findViewById(R.id.timerStop);  // taskview
+        ImageButton resetButton = view.findViewById(R.id.timerReset); // taskview
+        TextView counter = view.findViewById(R.id.counter); // taskview
+        TextView date = view.findViewById(R.id.date);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch _switch = view.findViewById(R.id.switch1);
 
         if (counter.equals("00:00")) {
-            startButton.setEnabled(false);
+            startButton.setEnabled(false); // zaman 0 sa başlamaz
         }
-
-        // ImageView imageView = view.findViewById(R.id.taskImage);
-        Switch x = view.findViewById(R.id.switch1);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +114,16 @@ public class TodoListActivity extends AppCompatActivity {
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
 
-
-                String minute = counter.getText().toString().split(":")[0];
-                String second = counter.getText().toString().split(":")[1];
-                //Toast.makeText(TodoListActivity.this ,  counter.getText().toString() + " caunt " ,Toast.LENGTH_LONG).show();
-
+                String minute = counter.getText().toString().split(":")[0]; // dakika
+                String second = counter.getText().toString().split(":")[1]; // saniye
 
                 try {
                     if(second.equals("")){
                         second="0";
                     }
-                    int value = Integer.parseInt(minute.trim())* 60 * 1000+ Integer.parseInt(second.trim()) * 1000;
+                    int value = Integer.parseInt(minute.trim())* 60 * 1000+ Integer.parseInt(second.trim()) * 1000; // zaman değeri
 
+                    String finalSecond = second;
                     CountDownTimer countDownTime = new CountDownTimer(value ,1000){
                         @SuppressLint("SetTextI18n")
                         public void onTick(long millisUntilFinished){
@@ -134,18 +143,45 @@ public class TodoListActivity extends AppCompatActivity {
                                 counter.setText(minuteValue + " : " + secondValue);
                             }
 
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                            ContentValues updatedValues = new ContentValues();
+                            updatedValues.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(minuteValue));
+                            updatedValues.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(secondValue));
+
+                            String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                            String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+
+                            String[] whereArgs = {minute};
+                            String[] whereArgs1 = {finalSecond};
+
+                            int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                            int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause1, whereArgs1);
+
+
+                            if (rowsUpdated > 0 && rowsUpdated1 >0) {
+                                // Başarılı bir şekilde güncellendi
+                                Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Hata oluştu
+                                Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Veritabanı bağlantısını kapat
+                            db.close();
+
                         }
 
                         @Override
                         public void onFinish() {
                             counter.setText("00:00");
                             startButton.setEnabled(true);
-                            alertSound();
-                            alertVib();
+                            alertSound(); //  ses
+                            alertVib(); // titreşim
                         }
 
                     }.start();
-
 
                     stopButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -153,22 +189,100 @@ public class TodoListActivity extends AppCompatActivity {
                             startButton.setEnabled(true);
                             resetButton.setEnabled(true);
                             countDownTime.cancel();
+
+                            Toast.makeText(TodoListActivity.this, "burda",Toast.LENGTH_LONG).show();
+
                         }
                     });
 
                     resetButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             countDownTime.cancel();
                             stopButton.setEnabled(false);
                             counter.setText("00:00");
+
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                            ContentValues updatedValues = new ContentValues();
+                            ContentValues updatedValues1 = new ContentValues();
+
+                            updatedValues.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(0));
+                            updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(0));
+
+                            String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                            String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+                            String[] whereArgs = {counter.getText().toString().split(":")[0].trim()};
+                            String[] whereArgs1 = {counter.getText().toString().split(":")[0].trim()};
+
+                            int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                            int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                            if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                                // Başarılı bir şekilde güncellendi
+                                Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Hata oluştu
+                                Toast.makeText(TodoListActivity.this, "Görev sikiyim bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Veritabanı bağlantısını kapat
+                            db.close();
                         }
                     });
-
 
                 } catch (Exception e){
                     Toast.makeText(TodoListActivity.this,"You didn't give the time correctly",Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopButton.setEnabled(false);
+                counter.setText("00:00");
+
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                ContentValues updatedValues = new ContentValues();
+                ContentValues updatedValues1 = new ContentValues();
+
+                updatedValues.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(0));
+                updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(0));
+
+                String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+             //   String[] whereArgs = {minutesComesDb};
+             //   String[] whereArgs1 = {secondsComesDb};
+
+//                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+//                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+//
+//                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+//                    // Başarılı bir şekilde güncellendi
+//                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    // Hata oluştu
+//                    Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                // Veritabanı bağlantısını kapat
+//                db.close();
+
+
+            }
+        });
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Year = String.valueOf(year);
+                Month = String.valueOf(month);
+                Day = String.valueOf(dayOfMonth + 1);
             }
         });
 
@@ -184,14 +298,20 @@ public class TodoListActivity extends AppCompatActivity {
                 } else {
                     int minuteValue = 0;
                     int secondValue = 0;
+                    if (Day.equals("") || Month.equals("") || Year.equals("")){
+                        date.setText(date.getText().toString()  +  "\n " + 01 + " . " + 01 + " . " + 01);
+                    } else {
+                        date.setText(date.getText().toString()  +  "\n " + Day + " . " + Month + " . " + Year);
 
-                    String task = taskToAddList.getText().toString() ;
+                    }
+
+                    String task = taskToAddList.getText().toString() ; // layout add deki edittext
                     String notes = notesToAddList.getText().toString();
 
-                    newTask.setText(task);
+                    newTask.setText(task); // string değeri layoutdaki textview a atanır
                     newTask.setPadding(16,5,10,10);
 
-                    newNote.setText(notes);
+                    newNote.setText(notes); // string değeri layoutdaki textview a atanır
                     newNote.setPadding(16,5,10,10);
 
                     try {
@@ -199,7 +319,7 @@ public class TodoListActivity extends AppCompatActivity {
                         minuteValue = Integer.parseInt(minuteAdd.getText().toString());
                         secondValue = Integer.parseInt(secondAdd.getText().toString());
 
-                        if (secondValue > 60){
+                        if (secondValue >= 60){ // saniye 60 dan büyükse dakikaya çevrilir
                             minuteValue += secondValue / 60;
                             secondValue = secondValue % 60;
                         }
@@ -215,7 +335,6 @@ public class TodoListActivity extends AppCompatActivity {
                         }
                     } catch (Exception e ) {
                         counter.setText(minuteValue + " : " + secondValue);
-
                     }
 
                     view.setClickable(true);
@@ -236,26 +355,22 @@ public class TodoListActivity extends AppCompatActivity {
 
                     taskList.addView(view);
 
-                    x.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked){
-                              //  view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF3700B3")));
+                            if (isChecked){ // on
                                 view.setAlpha(0.3f);
-                                x.setAlpha(1);
-
-                            } else {
-                                view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF03DAC5")));
+                            } else { // off
                                 view.setAlpha(1);
-
                             }
                         }
                     });
-
+                    // tasklarla ilgilili bilgiler database e gider.
                     values.put(DatabaseHelper.COLUMN_TASK, newTask.getText().toString());
                     values.put(DatabaseHelper.COLUMN_NOTES, newNote.getText().toString());
                     values.put(DatabaseHelper.COLUMN_MINUTES, minuteAdd.getText().toString() );
                     values.put(DatabaseHelper.COLUMN_SECONDS, secondAdd.getText().toString());
+                    values.put(DatabaseHelper.COLUMN_DATE,date.getText().toString());
 
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     long id = db.insert(DatabaseHelper.TABLE_NAME, null, values);
@@ -284,20 +399,18 @@ public class TodoListActivity extends AppCompatActivity {
                             EditText editTaskToAddList = customView.findViewById(R.id.editTask);
                             EditText editNotesToAddList = customView.findViewById(R.id.editNotes);
 
-                            String previousTask = newTask.getText().toString();
+                            String previousTask = newTask.getText().toString(); // önceki hazır textview in değerini alıp üstüne yazmak için
                             String previousNotes = newNote.getText().toString();
 
-                            editTaskToAddList.setText(previousTask);
+                            editTaskToAddList.setText(previousTask);  // önceki hazır textview in değerini alıp üstüne yazmak için
                             editNotesToAddList.setText(previousNotes);
 
                             Button editButton = customView.findViewById(R.id.editButton);
                             Button deleteButton = customView.findViewById(R.id.deleteButton);
 
-                            editButton.setOnClickListener(new View.OnClickListener() {
+                            editButton.setOnClickListener(new View.OnClickListener() { // tasklari editlemek için
                                 @Override
                                 public void onClick(View v) {
-                                    alertSound();
-                                    alertVib();
 
                                     String editedTask  = editTaskToAddList.getText().toString();
                                     String editedNotes = editNotesToAddList.getText().toString();
@@ -308,7 +421,41 @@ public class TodoListActivity extends AppCompatActivity {
                                     newNote.setText(editedNotes);
                                     newNote.setPadding(16,5,10,10);
                                     Toast.makeText(TodoListActivity.this, " Your task was edited ", Toast.LENGTH_LONG).show();
+
+                                    // Veritabanını güncelle
+                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                                    ContentValues updatedValues = new ContentValues();
+                                    updatedValues.put(DatabaseHelper.COLUMN_TASK, editedTask);
+                                    updatedValues.put(DatabaseHelper.COLUMN_NOTES, editedNotes);
+
+                                    String whereClause = DatabaseHelper.COLUMN_TASK + " = ?";
+                                    String[] whereArgs = {previousTask};
+
+                                    int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+
+                                    if (rowsUpdated > 0) {
+                                        // Başarılı bir şekilde güncellendi
+                                        Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Hata oluştu
+                                        Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    // Veritabanı bağlantısını kapat
+                                    db.close();
                                     move.hide();
+                                }
+                            });
+
+                            _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (isChecked){ // on
+                                        view.setAlpha(0.3f);
+                                    } else { // off
+                                        view.setAlpha(1);
+                                    }
                                 }
                             });
 
@@ -322,9 +469,44 @@ public class TodoListActivity extends AppCompatActivity {
                             });
                         }
                     });
-
                     scaleOptionDialog.hide();
                 }
+
+                resetButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopButton.setEnabled(false);
+                        counter.setText("00:00");
+
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                        ContentValues updatedValues = new ContentValues();
+                        ContentValues updatedValues1 = new ContentValues();
+
+                        updatedValues.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(0));
+                        updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(0));
+
+                        String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                        String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+//                        String[] whereArgs = {minutesComesDb};
+//                        String[] whereArgs1 = {secondsComesDb};
+//
+//                        int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+//                        int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+//
+//                        if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+//                            // Başarılı bir şekilde güncellendi
+//                            Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            // Hata oluştu
+//                            Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+//                        }
+
+                        // Veritabanı bağlantısını kapat
+                        db.close();
+                    }
+                });
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -347,12 +529,11 @@ public class TodoListActivity extends AppCompatActivity {
     public void alertVib(){
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(VibrationEffect.createOneShot(10000,VibrationEffect.DEFAULT_AMPLITUDE));
+        vibrator.vibrate(VibrationEffect.createOneShot(5000,VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
+    @SuppressLint("SetTextI18n")
     public  void getTasks(){
-
-        List<Task> taskList = new ArrayList<>();
 
         // Veritabanından görevleri sorgula
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -361,14 +542,16 @@ public class TodoListActivity extends AppCompatActivity {
         LinearLayout taskListLayout = findViewById(R.id.list);
         taskListLayout.removeAllViews();
 
-            // Cursor'da kayıt varsa
+
+        // Cursor'da kayıt varsa
         while (cursor.moveToNext()){
-                // Kayıttaki sütunları
-            @SuppressLint("Range") String task = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TASK));
-            @SuppressLint("Range") String notes = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NOTES));
-            @SuppressLint("Range") String minutes = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_MINUTES));
-            @SuppressLint("Range") String seconds = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SECONDS));
-            // Task nesnesini oluştur ve listeye ekle
+
+            // Kayıttaki sütunlar
+            @SuppressLint("Range") String taskComesDb = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_TASK));
+            @SuppressLint("Range") String notesComesDb = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NOTES));
+            @SuppressLint("Range") String minutesComesDb = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_MINUTES));
+            @SuppressLint("Range") String secondsComesDb = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_SECONDS));
+            @SuppressLint("Range") String datesComesDb = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DATE));
 
             LayoutInflater inflater = LayoutInflater.from(this);
             View view = inflater.inflate(R.layout.task, taskListLayout, false);
@@ -376,15 +559,265 @@ public class TodoListActivity extends AppCompatActivity {
             TextView myTask = view.findViewById(R.id.myTask);
             TextView Notes = view.findViewById(R.id.notes);
             TextView counter = view.findViewById(R.id.counter);
+            TextView date = view.findViewById(R.id.date);
+            @SuppressLint("UseSwitchCompatOrMaterialCode") Switch _switch = view.findViewById(R.id.switch1);
 
-            myTask.setText(task);
-            Notes.setText(notes);
-            counter.setText(minutes + " : " + seconds);
+            myTask.setText(taskComesDb);
+            Notes.setText(notesComesDb);
+            counter.setText(minutesComesDb + " : " + secondsComesDb);
+            date.setText(datesComesDb);
+
+            ImageButton startButton = view.findViewById(R.id.timerStar); // taskview
+            ImageButton stopButton = view.findViewById(R.id.timerStop);  // taskview
+            ImageButton resetButton = view.findViewById(R.id.timerReset); // taskview
 
             myTask.setPadding(16, 5, 10, 10);
             Notes.setPadding(16, 5, 10, 10);
 
+            int minuteValue = 0;
+            int secondValue = 0;
+
+            try {
+                minuteValue = Integer.parseInt(minutesComesDb.toString());
+                secondValue = Integer.parseInt(secondsComesDb.toString());
+
+                if (secondValue >= 60){ // saniye 60 dan büyükse dakikaya çevrilir
+                    minuteValue += secondValue / 60;
+                    secondValue = secondValue % 60;
+                }
+
+                if (minuteValue < 10 && secondValue < 10){
+                    counter.setText( "0"+ minuteValue + " : 0" + secondValue);
+                } else if(minuteValue < 10 ){
+                    counter.setText( "0"+ minuteValue + " : " + secondValue);
+                } else if (secondValue < 10){
+                    counter.setText(minuteValue + " : 0" + secondValue);
+                } else {
+                    counter.setText(minuteValue + " : " + secondValue);
+                }
+            } catch (Exception e ) {
+                counter.setText(minuteValue + " : " + secondValue);
+            }
+
             view.setClickable(true);
+
+            myTask.setTextSize(25);
+            myTask.setTextColor(Color.WHITE);
+
+            Notes.setTextSize(20);
+            Notes.setTextColor(Color.WHITE);
+
+            myTask.getAutoSizeMaxTextSize();
+
+            myTask.setMovementMethod(new ScrollingMovementMethod());
+            Notes.setMovementMethod(new ScrollingMovementMethod());
+
+            myTask.setVisibility(View.VISIBLE);
+            Notes.setVisibility(View.VISIBLE);
+
+            view.setClickable(true);
+
+            if (counter.equals("00:00")){
+                startButton.setEnabled(false);
+            }
+            _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked){ // on
+                        view.setAlpha(0.3f);
+                    } else { // off
+                        view.setAlpha(1);
+                    }
+                }
+            });
+
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startButton.setEnabled(false);
+                    stopButton.setEnabled(true);
+
+                    String minute = counter.getText().toString().split(":")[0]; // dakika
+                    String second = counter.getText().toString().split(":")[1]; // saniye
+
+                    try {
+                        if(second.equals("")){
+                            second="0";
+                        }
+                        int value = Integer.parseInt(minute.trim())* 60 * 1000+ Integer.parseInt(second.trim()) * 1000; // zaman değeri
+
+                        String finalSecond = second;
+                        CountDownTimer countDownTime = new CountDownTimer(value ,1000){
+                            @SuppressLint("SetTextI18n")
+                            public void onTick(long millisUntilFinished){
+
+                                long time = millisUntilFinished / 1000;
+
+                                long minuteValue =  time / 60;
+                                long secondValue =  time % 60;
+
+                                if (minuteValue < 10 && secondValue < 10){
+                                    counter.setText( "0"+ minuteValue + " : 0" + secondValue);
+                                } else if(minuteValue < 10 ){
+                                    counter.setText( "0"+ minuteValue + " : " + secondValue);
+                                } else if ( secondValue < 10){
+                                    counter.setText(minuteValue + " : 0" + secondValue);
+                                } else {
+                                    counter.setText(minuteValue + " : " + secondValue);
+                                }
+//                                                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//                                ContentValues updatedValues = new ContentValues();
+//                                ContentValues updatedValues1 = new ContentValues();
+//
+//                                updatedValues.put(DatabaseHelper.COLUMN_MINUTES, 0);
+//                                updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, 0);
+//
+//                                String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+//                                String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+//
+//                                String[] whereArgs = {minute};
+//                                String[] whereArgs1 = {finalSecond};
+//
+//                                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+//                                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+//
+//                                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+//                                    // Başarılı bir şekilde güncellendi
+//                                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    // Hata oluştu
+//                                    //Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                // Veritabanı bağlantısını kapat
+//                                db.close();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                counter.setText("00:00");
+                                startButton.setEnabled(false);
+                                alertSound(); //  ses
+                                alertVib(); // titreşim
+
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                                ContentValues updatedValues = new ContentValues();
+                                ContentValues updatedValues1 = new ContentValues();
+
+                                updatedValues.put(DatabaseHelper.COLUMN_MINUTES, 0);
+                                updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, 0);
+
+                                String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                                String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+                                String[] whereArgs = {minutesComesDb};
+                                String[] whereArgs1 = {secondsComesDb};
+
+                                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                                    // Başarılı bir şekilde güncellendi
+                                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Hata oluştu
+                                    Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                // Veritabanı bağlantısını kapat
+                                db.close();
+                            }
+
+                        }.start();
+
+
+                        stopButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                startButton.setEnabled(true);
+                                resetButton.setEnabled(true);
+                                countDownTime.cancel();
+
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                                ContentValues updatedValues = new ContentValues();
+                                ContentValues updatedValues1 = new ContentValues();
+
+                                updatedValues.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(counter.getText().toString().split(":")[0]));
+                                updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(counter.getText().toString().split(":")[1]));
+
+                                String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                                String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+                                String[] whereArgs = {minutesComesDb};
+                                String[] whereArgs1 = {secondsComesDb};
+
+                                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                                    // Başarılı bir şekilde güncellendi
+                                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Hata oluştu
+                                    Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                // Veritabanı bağlantısını kapat
+                                db.close();
+                            }
+                        });
+
+                        resetButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                countDownTime.cancel();
+                                stopButton.setEnabled(false);
+                                startButton.setEnabled(false);
+
+
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                                ContentValues updatedValues = new ContentValues();
+                                ContentValues updatedValues1 = new ContentValues();
+
+                                updatedValues.put(DatabaseHelper.COLUMN_MINUTES, 0);
+                                updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, 0);
+
+                                String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                                String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+                                String[] whereArgs = {minutesComesDb};
+                                String[] whereArgs1 = {secondsComesDb};
+
+                                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                                    // Başarılı bir şekilde güncellendi
+                                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Hata oluştu
+                                    Toast.makeText(TodoListActivity.this, "Görev ellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                // Veritabanı bağlantısını kapat
+                                db.close();
+
+                                counter.setText("00:00");
+                            }
+                        });
+
+
+                    } catch (Exception e){
+                        Toast.makeText(TodoListActivity.this,"You didn't give the time correctly",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -394,13 +827,13 @@ public class TodoListActivity extends AppCompatActivity {
                     move.setContentView(customView);
                     move.show();
 
-                    EditText editTaskToAddList = customView.findViewById(R.id.editTask);
+                    EditText editTaskToAddList = customView.findViewById(R.id.editTask); // layout_movedaki edittextler
                     EditText editNotesToAddList = customView.findViewById(R.id.editNotes);
 
                     String previousTask = myTask.getText().toString();
                     String previousNotes = Notes.getText().toString();
 
-                    editTaskToAddList.setText(previousTask);
+                    editTaskToAddList.setText(previousTask); // layout_movedaki edittextlere normal olan notlar atanır sonrasında
                     editNotesToAddList.setText(previousNotes);
 
                     Button editButton = customView.findViewById(R.id.editButton);
@@ -409,7 +842,7 @@ public class TodoListActivity extends AppCompatActivity {
                     editButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String editedTask = editTaskToAddList.getText().toString();
+                            String editedTask = editTaskToAddList.getText().toString(); // layout_movedaki edittextlere normal olan notlar atanır sonrasında string valueları alınır.
                             String editedNotes = editNotesToAddList.getText().toString();
 
                             myTask.setText(editedTask);
@@ -417,6 +850,40 @@ public class TodoListActivity extends AppCompatActivity {
 
                             Notes.setText(editedNotes);
                             Notes.setPadding(16, 5, 10, 10);
+
+                            _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    if (isChecked){ // on
+                                        view.setAlpha(0.3f);
+                                    } else { // off
+                                        view.setAlpha(1);
+                                    }
+                                }
+                            });
+
+                            // Veritabanını güncelle
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                            ContentValues updatedValues = new ContentValues();
+                            updatedValues.put(DatabaseHelper.COLUMN_TASK, editedTask);
+                            updatedValues.put(DatabaseHelper.COLUMN_NOTES, editedNotes);
+
+                            String whereClause = DatabaseHelper.COLUMN_TASK + " = ?";
+                            String[] whereArgs = {previousTask};
+
+                            int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+
+                            if (rowsUpdated > 0) {
+                                // Başarılı bir şekilde güncellendi
+                                Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Hata oluştu
+                                Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            // Veritabanı bağlantısını kapat
+                            db.close();
 
                             Toast.makeText(TodoListActivity.this, "Your task was edited", Toast.LENGTH_LONG).show();
                             move.hide();
@@ -429,12 +896,10 @@ public class TodoListActivity extends AppCompatActivity {
                             Toast.makeText(TodoListActivity.this, myTask.getText().toString() + " were removed", Toast.LENGTH_LONG).show();
                             taskListLayout.removeView(view);
                             move.hide();
-                            taskList.remove(task);
                         }
                     });
                 }
             });
-
             taskListLayout.addView(view);
         }
 

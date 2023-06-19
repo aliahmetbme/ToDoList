@@ -7,13 +7,17 @@ public class Task {
     private static String notes;
     private static String minutes;
     private static String seconds;
+    private static String date;
 
-    public Task(String task, String notes, String minutes, String seconds) {
+
+
+    public Task(String task, String notes, String minutes, String seconds, String date) {
 
         this.task = task;
         this.notes = notes;
         this.minutes = minutes;
         this.seconds = seconds;
+        this.date = date;
 
 
     }
@@ -48,5 +52,13 @@ public class Task {
 
     public void setSeconds(String seconds) {
         Task.seconds = seconds;
+    }
+
+    public static String getDate() {
+        return date;
+    }
+
+    public static void setDate(String date) {
+        Task.date = date;
     }
 }

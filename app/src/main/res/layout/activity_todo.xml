@@ -4,28 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="#52A59E">
 
 
     <HorizontalScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="410dp"
-        android:layout_height="742dp"
+        android:layout_width="395dp"
+        android:layout_height="734dp"
 
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.272"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"/>
 
     </HorizontalScrollView>
 
@@ -35,6 +36,7 @@
         android:layout_height="38dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/d"
+        android:contentDescription="@string/app_name"
         android:elevation="15dp"
         android:gravity="center"
         android:visibility="visible"
@@ -52,7 +54,7 @@
         android:layout_height="39dp"
         android:gravity="top"
         android:text="TASKS"
-        android:textColor="#536DFE"
+        android:textColor="#F5F5F6"
         android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
