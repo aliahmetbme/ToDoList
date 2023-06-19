@@ -116,7 +116,7 @@ public class TodoListActivity extends AppCompatActivity {
         TextView date = view.findViewById(R.id.date);
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch _switch = view.findViewById(R.id.switch1);
 
-        if (counter.equals("00:00")) {
+        if (counter.equals("00 : 00")) {
             startButton.setEnabled(false); // zaman 0 sa başlamaz
         }
 
@@ -187,7 +187,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                         @Override
                         public void onFinish() {
-                            counter.setText("00:00");
+                            counter.setText("00 : 00");
                             startButton.setEnabled(true);
                             alertSound(); //  ses
                             alertVib(); // titreşim
@@ -242,7 +242,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                             // Veritabanı bağlantısını kapat
                             db.close();
-                            counter.setText("00:00");
+                            counter.setText("00 : 00");
                         }
                     });
 
@@ -285,7 +285,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                 // Veritabanı bağlantısını kapat
                 db.close();
-                counter.setText("00:00");
+                counter.setText("00 : 00");
 
 
             }
@@ -531,7 +531,7 @@ public class TodoListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         stopButton.setEnabled(false);
-                        counter.setText("00:00");
+
 
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -559,6 +559,8 @@ public class TodoListActivity extends AppCompatActivity {
 
                         // Veritabanı bağlantısını kapat
                         db.close();
+
+                        counter.setText("00 : 00");
                     }
                 });
             }
@@ -576,7 +578,8 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopButton.setEnabled(false);
-                counter.setText("00:00");
+
+                counter.setText("00 : 00");
             }
         });
 
@@ -666,10 +669,10 @@ public class TodoListActivity extends AppCompatActivity {
             view.setClickable(true);
 
             myTask.setTextSize(25);
-            myTask.setTextColor(Color.WHITE);
+
 
             Notes.setTextSize(20);
-            Notes.setTextColor(Color.WHITE);
+          ;
 
             myTask.getAutoSizeMaxTextSize();
 
@@ -681,7 +684,7 @@ public class TodoListActivity extends AppCompatActivity {
 
             view.setClickable(true);
 
-            if (counter.equals("00:00")){
+            if (counter.equals("00 : 00")){
                 startButton.setEnabled(false);
             }
             _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -791,7 +794,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                                 // Veritabanı bağlantısını kapat
                                 db.close();
-                                counter.setText("00:00");
+                                counter.setText("00 : 00");
 
                             }
 
@@ -871,7 +874,7 @@ public class TodoListActivity extends AppCompatActivity {
                                 // Veritabanı bağlantısını kapat
                                 db.close();
 
-                                counter.setText("00:00");
+                                counter.setText("00 : 00");
                             }
                         });
 
@@ -916,7 +919,7 @@ public class TodoListActivity extends AppCompatActivity {
                     db.close();
 
 
-                    counter.setText("00:00");
+                    counter.setText("00 : 00");
 
 
                 }

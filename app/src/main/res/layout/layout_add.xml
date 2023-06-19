@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="388dp"
         android:layout_height="match_parent"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#4F97A3"
+        android:background="@drawable/rc2"
+        android:backgroundTint="#768A89"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="265dp"
-            android:layout_height="wrap_content"
+            android:layout_height="102dp"
             android:text="CREATE \nNEW TASK"
             android:textColor="@color/white"
             android:textSize="35dp"
@@ -56,8 +56,8 @@
             android:layout_width="341dp"
             android:layout_height="53dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#cfe8ef"
+            android:background="@drawable/rc2"
+            android:backgroundTint="#F2F2F2"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text="Title"
@@ -74,8 +74,8 @@
             android:layout_width="340dp"
             android:layout_height="62dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#cfe8ef"
+            android:background="@drawable/rc2"
+            android:backgroundTint="#F2F2F2"
             android:gravity="top"
             android:minHeight="48dp"
             android:text="Notes "
@@ -104,9 +104,8 @@
             app:layout_constraintVertical_bias="0.735" />
 
         <LinearLayout
-            android:layout_width="268dp"
-            android:layout_height="79dp"
-
+            android:layout_width="263dp"
+            android:layout_height="77dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -130,12 +129,13 @@
 
                 <Spinner
                     android:id="@+id/spinnerDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="84dp"
                     android:layout_height="44dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/rounded_corners"
-                    android:backgroundTint="#cfe8ef"
-                    android:entries="@array/day31" />
+                    android:background="@drawable/rc2"
+                    android:backgroundTint="#F2F2F2"
+                    android:entries="@array/day31"
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -155,13 +155,13 @@
 
                 <Spinner
                     android:id="@+id/spinnerMont"
-                    android:layout_width="match_parent"
+                    android:layout_width="80dp"
                     android:layout_height="44dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/rounded_corners"
-                    android:backgroundTint="#cfe8ef"
+                    android:background="@drawable/rc2"
+                    android:backgroundTint="#F2F2F2"
                     android:entries="@array/months" />
-                />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -216,8 +216,8 @@
                     android:layout_width="95dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/rounded_corners"
-                    android:backgroundTint="#cfe8ef"
+                    android:background="@drawable/rc2"
+                    android:backgroundTint="#F2F2F2"
                     android:dropDownHeight="2dp"
                     android:entries="@array/veri_kaynagi"
                     app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -251,8 +251,8 @@
                     android:layout_width="95dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/rounded_corners"
-                    android:backgroundTint="#cfe8ef"
+                    android:background="@drawable/rc2"
+                    android:backgroundTint="#F2F2F2"
                     android:dropDownHeight="2dp"
                     android:entries="@array/veri_kaynagi"
                     app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -272,7 +272,7 @@
             android:layout_marginTop="55dp"
             android:layout_marginBottom="25dp"
             android:background="@drawable/btn_background"
-            android:backgroundTint="#70c1b3"
+            android:backgroundTint="#DADADA"
             android:drawableLeft="@drawable/plus"
             android:gravity="center_vertical"
             android:paddingStart="18dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#52A59E">
+    android:background="#58776F">
 
 
     <ScrollView
@@ -13,7 +13,7 @@
         android:layout_width="413dp"
         android:layout_height="732dp"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,6 +25,7 @@
 
         <LinearLayout
             android:id="@+id/list"
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -34,8 +35,8 @@
 
     <Button
         android:id="@+id/addList"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/d"
         android:contentDescription="@string/app_name"
@@ -52,8 +53,8 @@
 
     <Button
         android:id="@+id/trash"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/trash"
         android:elevation="15dp"
