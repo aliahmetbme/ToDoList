@@ -1,13 +1,14 @@
 # ToDoList
 
 Uygulamayı ilk açtığınız zaman sizi tasklarınıza, alışveriş listenize, harcama planlarınıza ve hatıratıcılarınıza yönlendiren butonlar bulunmaktadır.
-
-![image](https://github.com/aliahmetbme/ToDoList/assets/110021045/dca9bd2f-c009-4ef6-a897-536d27f45ff0)
-
 Tasklarınızın olduğu sayfada tasklarınızı ekleyebilir tamamladıklarınızı kaydırarak saydamlaştırabilir ve en son tüm taskları tamamladığınız zaman tüm taskları silebilirsiniz.
 Tasklar database e kaydedildiği için kaybolmaz ve güncel kalır.
 Tasklarınızı bir günceleme gerektiği zaman task i ve o taske ait notları güncelleyebilirsiniz.
 Tasklarınız task ın başlığı, notları, tamamlayacağınız tarihi ve kaç dakikada tamamlayacağınızı ayarlayabileceğiniz bir kronometre bulunmaktadır. 
+
+![image](https://github.com/aliahmetbme/ToDoList/assets/110021045/dca9bd2f-c009-4ef6-a897-536d27f45ff0)
+
+
 
 ![image](https://github.com/aliahmetbme/ToDoList/assets/110021045/f0b871b5-df68-46c4-9d05-f5f5c4789b9c)
 
