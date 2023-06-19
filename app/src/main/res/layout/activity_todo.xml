@@ -4,31 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="#52A59E">
 
 
-    <HorizontalScrollView
+    <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="395dp"
-        android:layout_height="734dp"
-
+        android:layout_width="413dp"
+        android:layout_height="732dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.272"
+        app:layout_constraintVertical_bias="0.256"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"/>
+            android:layout_gravity="center_horizontal"
+                        android:orientation="vertical" />
 
-    </HorizontalScrollView>
+    </ScrollView>
 
     <Button
         android:id="@+id/addList"
@@ -48,6 +50,23 @@
         app:layout_constraintVertical_bias="0.045"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <Button
+        android:id="@+id/trash"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/trash"
+        android:elevation="15dp"
+        android:gravity="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045"
+        tools:ignore="TouchTargetSizeCheck" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="133dp"
@@ -58,11 +77,10 @@
         android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintHorizontal_bias="0.544"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
-
+        app:layout_constraintVertical_bias="0.035" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

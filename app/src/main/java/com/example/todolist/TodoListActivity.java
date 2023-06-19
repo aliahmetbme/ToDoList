@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,12 +18,14 @@ import android.os.Vibrator;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +61,7 @@ public class TodoListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todo);
 
         Button addList = findViewById(R.id.addList);
+        Button clearTasks = findViewById(R.id.trash);
         dbHelper = new DatabaseHelper(this);
         getTasks(); // when app is turned on databased go out to information
 
@@ -68,32 +72,40 @@ public class TodoListActivity extends AppCompatActivity {
                 addTask();
             }
         });
+
+        clearTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearTable();
+                getTasks();
+            }
+        });
     }
 
     // adding new tasks
     public  void addTask(){
 
-
-        View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_add, null);
-        Dialog scaleOptionDialog = new Dialog(TodoListActivity.this);
-        scaleOptionDialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
-        scaleOptionDialog.setContentView(customView);
+        Dialog scaleOptionDialog = new Dialog(this);
+        scaleOptionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        scaleOptionDialog.setContentView(R.layout.layout_add);
         scaleOptionDialog.show();
 
-        Button cancel = customView.findViewById(R.id.cancelButton);
-        Button _addButton = customView.findViewById(R.id.addButton);
+        Button cancel = scaleOptionDialog.findViewById(R.id.cancelButton);
+        Button _addButton = scaleOptionDialog.findViewById(R.id.addButton);
 
         LinearLayout taskList = findViewById(R.id.list);
 
         LayoutInflater inflater = LayoutInflater.from(this);  // LayoutInflater oluşturun
         View view = inflater.inflate(R.layout.task,taskList,false); // XML dosyasını LinearLayout'a ekle
 
-        EditText taskToAddList = customView.findViewById(R.id.organiseTask);
-        EditText notesToAddList = customView.findViewById(R.id.organiseNotes);
+        EditText taskToAddList = scaleOptionDialog.findViewById(R.id.organiseTask);
+        EditText notesToAddList = scaleOptionDialog.findViewById(R.id.organiseNotes);
 
-        EditText minuteAdd = customView.findViewById(R.id.minute); // layout add'deki edittext
-        EditText secondAdd = customView.findViewById(R.id.second); // layout add'deki edittext
-        calendarView = customView.findViewById(R.id.calendarView);
+         // layout add'deki edittext
+        Spinner secondSpinner = scaleOptionDialog.findViewById(R.id.second); // layout add'deki edittext
+        Spinner minuteSpinner = scaleOptionDialog.findViewById(R.id.spinner);
+        Spinner daySpinner = scaleOptionDialog.findViewById(R.id.spinnerDay);
+        Spinner monthSpinner = scaleOptionDialog.findViewById(R.id.spinnerMont);
 
         TextView newTask = view.findViewById(R.id.myTask); // taskview
         TextView newNote = view.findViewById(R.id.notes); // taskview
@@ -201,7 +213,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                             countDownTime.cancel();
                             stopButton.setEnabled(false);
-                            counter.setText("00:00");
+
 
                             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -230,6 +242,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                             // Veritabanı bağlantısını kapat
                             db.close();
+                            counter.setText("00:00");
                         }
                     });
 
@@ -243,7 +256,7 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopButton.setEnabled(false);
-                counter.setText("00:00");
+
 
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -256,54 +269,104 @@ public class TodoListActivity extends AppCompatActivity {
                 String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
                 String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
 
-             //   String[] whereArgs = {minutesComesDb};
-             //   String[] whereArgs1 = {secondsComesDb};
+                String[] whereArgs = {counter.getText().toString().split(":")[0].trim()};
+                String[] whereArgs1 = {counter.getText().toString().split(":")[0].trim()};
 
-//                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
-//                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
-//
-//                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
-//                    // Başarılı bir şekilde güncellendi
-//                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // Hata oluştu
-//                    Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                // Veritabanı bağlantısını kapat
-//                db.close();
+                int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                    // Başarılı bir şekilde güncellendi
+                    Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Hata oluştu
+                    Toast.makeText(TodoListActivity.this, "Görev sikiyim bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                }
+
+                // Veritabanı bağlantısını kapat
+                db.close();
+                counter.setText("00:00");
 
 
             }
         });
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+        daySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Year = String.valueOf(year);
-                Month = String.valueOf(month);
-                Day = String.valueOf(dayOfMonth + 1);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                Day = String.valueOf(selectedValue);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Day = "01";
             }
         });
+
+        monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                Month = String.valueOf(selectedValue);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Month = "01";
+            }
+        });
+
+
+
+
+
+        final int[] minuteValue = {0};
+        final int[] secondValue = {0};
+
+        minuteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                minuteValue[0] = Integer.parseInt(selectedValue.trim());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                minuteValue[0] = 0;
+            }
+        });
+
+        secondSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                secondValue[0] = Integer.parseInt(selectedValue.trim());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                secondValue[0] = 0;
+            }
+        });
+
 
         _addButton.setOnClickListener(new View.OnClickListener() {
 
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
+
+
+
                 if (newTask.equals("")) {
 
                     Toast.makeText(TodoListActivity.this, "Please add your task", Toast.LENGTH_LONG).show();
 
                 } else {
-                    int minuteValue = 0;
-                    int secondValue = 0;
-                    if (Day.equals("") || Month.equals("") || Year.equals("")){
-                        date.setText(date.getText().toString()  +  "\n " + 01 + " . " + 01 + " . " + 01);
-                    } else {
-                        date.setText(date.getText().toString()  +  "\n " + Day + " . " + Month + " . " + Year);
 
-                    }
+                    date.setText(Day + "  / " + Month);
 
                     String task = taskToAddList.getText().toString() ; // layout add deki edittext
                     String notes = notesToAddList.getText().toString();
@@ -316,25 +379,22 @@ public class TodoListActivity extends AppCompatActivity {
 
                     try {
 
-                        minuteValue = Integer.parseInt(minuteAdd.getText().toString());
-                        secondValue = Integer.parseInt(secondAdd.getText().toString());
-
-                        if (secondValue >= 60){ // saniye 60 dan büyükse dakikaya çevrilir
-                            minuteValue += secondValue / 60;
-                            secondValue = secondValue % 60;
+                        if (secondValue[0] >= 60){ // saniye 60 dan büyükse dakikaya çevrilir
+                            minuteValue[0] += secondValue[0] / 60;
+                            secondValue[0] = secondValue[0] % 60;
                         }
 
-                        if (minuteValue < 10 && secondValue < 10){
-                            counter.setText( "0"+ minuteValue + " : 0" + secondValue);
-                        } else if(minuteValue < 10 ){
-                            counter.setText( "0"+ minuteValue + " : " + secondValue);
-                        } else if (secondValue < 10){
-                            counter.setText(minuteValue + " : 0" + secondValue);
+                        if (minuteValue[0] < 10 && secondValue[0] < 10){
+                            counter.setText( "0"+ minuteValue[0] + " : 0" + secondValue[0]);
+                        } else if(minuteValue[0] < 10 ){
+                            counter.setText( "0"+ minuteValue[0] + " : " + secondValue[0]);
+                        } else if (secondValue[0] < 10){
+                            counter.setText(minuteValue[0] + " : 0" + secondValue[0]);
                         } else {
-                            counter.setText(minuteValue + " : " + secondValue);
+                            counter.setText(minuteValue[0] + " : " + secondValue[0]);
                         }
                     } catch (Exception e ) {
-                        counter.setText(minuteValue + " : " + secondValue);
+                        counter.setText(minuteValue[0] + " : " + secondValue[0]);
                     }
 
                     view.setClickable(true);
@@ -368,8 +428,8 @@ public class TodoListActivity extends AppCompatActivity {
                     // tasklarla ilgilili bilgiler database e gider.
                     values.put(DatabaseHelper.COLUMN_TASK, newTask.getText().toString());
                     values.put(DatabaseHelper.COLUMN_NOTES, newNote.getText().toString());
-                    values.put(DatabaseHelper.COLUMN_MINUTES, minuteAdd.getText().toString() );
-                    values.put(DatabaseHelper.COLUMN_SECONDS, secondAdd.getText().toString());
+                    values.put(DatabaseHelper.COLUMN_MINUTES, String.valueOf(minuteValue[0]));
+                    values.put(DatabaseHelper.COLUMN_SECONDS, String.valueOf(secondValue[0]));
                     values.put(DatabaseHelper.COLUMN_DATE,date.getText().toString());
 
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -377,10 +437,9 @@ public class TodoListActivity extends AppCompatActivity {
 
                     if (id != -1) {
                         // Başarılı bir şekilde eklendi
-                        Toast.makeText(TodoListActivity.this, "Görev eklendi.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TodoListActivity.this, " You created your task.", Toast.LENGTH_SHORT).show();
                     } else {
                         // Hata oluştu
-                        Toast.makeText(TodoListActivity.this, "Görev eklenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
                     }
 
                     // Veritabanı bağlantısını kapat
@@ -390,14 +449,13 @@ public class TodoListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
 
-                            View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
-                            Dialog move = new Dialog(TodoListActivity.this);
-                            move.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
-                            move.setContentView(customView);
-                            move.show();
+                            Dialog dialog = new Dialog(TodoListActivity.this);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialog.setContentView(R.layout.layout_move);
+                            dialog.show();
 
-                            EditText editTaskToAddList = customView.findViewById(R.id.editTask);
-                            EditText editNotesToAddList = customView.findViewById(R.id.editNotes);
+                            EditText editTaskToAddList = dialog.findViewById(R.id.editTask);
+                            EditText editNotesToAddList = dialog.findViewById(R.id.editNotes);
 
                             String previousTask = newTask.getText().toString(); // önceki hazır textview in değerini alıp üstüne yazmak için
                             String previousNotes = newNote.getText().toString();
@@ -405,8 +463,8 @@ public class TodoListActivity extends AppCompatActivity {
                             editTaskToAddList.setText(previousTask);  // önceki hazır textview in değerini alıp üstüne yazmak için
                             editNotesToAddList.setText(previousNotes);
 
-                            Button editButton = customView.findViewById(R.id.editButton);
-                            Button deleteButton = customView.findViewById(R.id.deleteButton);
+                            Button editButton = dialog.findViewById(R.id.editButton);
+                            Button cancelEdit = dialog.findViewById(R.id.deleteButton);
 
                             editButton.setOnClickListener(new View.OnClickListener() { // tasklari editlemek için
                                 @Override
@@ -420,7 +478,6 @@ public class TodoListActivity extends AppCompatActivity {
 
                                     newNote.setText(editedNotes);
                                     newNote.setPadding(16,5,10,10);
-                                    Toast.makeText(TodoListActivity.this, " Your task was edited ", Toast.LENGTH_LONG).show();
 
                                     // Veritabanını güncelle
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -436,7 +493,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                                     if (rowsUpdated > 0) {
                                         // Başarılı bir şekilde güncellendi
-                                        Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(TodoListActivity.this, " Your task was edited ", Toast.LENGTH_LONG).show();
                                     } else {
                                         // Hata oluştu
                                         Toast.makeText(TodoListActivity.this, "Görev güncellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
@@ -444,7 +501,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                                     // Veritabanı bağlantısını kapat
                                     db.close();
-                                    move.hide();
+                                    dialog.hide();
                                 }
                             });
 
@@ -459,12 +516,10 @@ public class TodoListActivity extends AppCompatActivity {
                                 }
                             });
 
-                            deleteButton.setOnClickListener(new View.OnClickListener() {
+                            cancelEdit.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(TodoListActivity.this, newTask.getText().toString() + " were remoted", Toast.LENGTH_LONG).show();
-                                    taskList.removeView(view);
-                                    move.hide();
+                                    dialog.hide();
                                 }
                             });
                         }
@@ -488,7 +543,6 @@ public class TodoListActivity extends AppCompatActivity {
 
                         String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
                         String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
-
 //                        String[] whereArgs = {minutesComesDb};
 //                        String[] whereArgs1 = {secondsComesDb};
 //
@@ -507,16 +561,26 @@ public class TodoListActivity extends AppCompatActivity {
                         db.close();
                     }
                 });
-
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        scaleOptionDialog.hide();
-                    }
-                });
             }
        });
-   }
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scaleOptionDialog.hide();
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() { // baslamadan önce sıfırlamak
+            @Override
+            public void onClick(View v) {
+                stopButton.setEnabled(false);
+                counter.setText("00:00");
+            }
+        });
+
+    }
 
     public void alertSound() {
 
@@ -696,7 +760,6 @@ public class TodoListActivity extends AppCompatActivity {
 
                             @Override
                             public void onFinish() {
-                                counter.setText("00:00");
                                 startButton.setEnabled(false);
                                 alertSound(); //  ses
                                 alertVib(); // titreşim
@@ -728,6 +791,8 @@ public class TodoListActivity extends AppCompatActivity {
 
                                 // Veritabanı bağlantısını kapat
                                 db.close();
+                                counter.setText("00:00");
+
                             }
 
                         }.start();
@@ -778,7 +843,6 @@ public class TodoListActivity extends AppCompatActivity {
                                 stopButton.setEnabled(false);
                                 startButton.setEnabled(false);
 
-
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                                 ContentValues updatedValues = new ContentValues();
@@ -818,17 +882,56 @@ public class TodoListActivity extends AppCompatActivity {
                 }
             });
 
+
+            resetButton.setOnClickListener(new View.OnClickListener() { // baslamadan önce sıfırlamak
+                @Override
+                public void onClick(View v) {
+                    stopButton.setEnabled(false);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                    ContentValues updatedValues = new ContentValues();
+                    ContentValues updatedValues1 = new ContentValues();
+
+                    updatedValues.put(DatabaseHelper.COLUMN_MINUTES, 0);
+                    updatedValues1.put(DatabaseHelper.COLUMN_SECONDS, 0);
+
+                    String whereClause = DatabaseHelper.COLUMN_MINUTES + " = ?";
+                    String whereClause1 = DatabaseHelper.COLUMN_SECONDS + " = ?";
+
+                    String[] whereArgs = {minutesComesDb};
+                    String[] whereArgs1 = {secondsComesDb};
+
+                    int rowsUpdated = db.update(DatabaseHelper.TABLE_NAME, updatedValues, whereClause, whereArgs);
+                    int rowsUpdated1 = db.update(DatabaseHelper.TABLE_NAME, updatedValues1, whereClause1, whereArgs1);
+
+                    if (rowsUpdated > 0 && rowsUpdated1 > 0) {
+                        // Başarılı bir şekilde güncellendi
+                        Toast.makeText(TodoListActivity.this, "Görev güncellendi.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Hata oluştu
+                        Toast.makeText(TodoListActivity.this, "Görev ellenirken bir hata oluştu.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Veritabanı bağlantısını kapat
+                    db.close();
+
+
+                    counter.setText("00:00");
+
+
+                }
+            });
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View customView = LayoutInflater.from(TodoListActivity.this).inflate(R.layout.layout_move, null);
-                    Dialog move = new Dialog(TodoListActivity.this);
-                    move.getWindow().setBackgroundDrawableResource(R.drawable.rounded_corners);
-                    move.setContentView(customView);
-                    move.show();
+                    Dialog dialog = new Dialog(TodoListActivity.this);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.layout_move);
+                    dialog.show();
 
-                    EditText editTaskToAddList = customView.findViewById(R.id.editTask); // layout_movedaki edittextler
-                    EditText editNotesToAddList = customView.findViewById(R.id.editNotes);
+                    EditText editTaskToAddList = dialog.findViewById(R.id.editTask); // layout_movedaki edittextler
+                    EditText editNotesToAddList = dialog.findViewById(R.id.editNotes);
 
                     String previousTask = myTask.getText().toString();
                     String previousNotes = Notes.getText().toString();
@@ -836,8 +939,8 @@ public class TodoListActivity extends AppCompatActivity {
                     editTaskToAddList.setText(previousTask); // layout_movedaki edittextlere normal olan notlar atanır sonrasında
                     editNotesToAddList.setText(previousNotes);
 
-                    Button editButton = customView.findViewById(R.id.editButton);
-                    Button deleteButton = customView.findViewById(R.id.deleteButton);
+                    Button editButton = dialog.findViewById(R.id.editButton);
+                    Button deleteButton = dialog.findViewById(R.id.deleteButton);
 
                     editButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -886,26 +989,35 @@ public class TodoListActivity extends AppCompatActivity {
                             db.close();
 
                             Toast.makeText(TodoListActivity.this, "Your task was edited", Toast.LENGTH_LONG).show();
-                            move.hide();
+                            dialog.hide();
                         }
                     });
 
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(TodoListActivity.this, myTask.getText().toString() + " were removed", Toast.LENGTH_LONG).show();
-                            taskListLayout.removeView(view);
-                            move.hide();
+                            dialog.hide();
                         }
                     });
+
+
                 }
             });
             taskListLayout.addView(view);
+
         }
 
         // Cursor ve veritabanı bağlantısını kapat
         cursor.close();
         db.close();
 
+    }
+
+    public void clearTable() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String tableName = DatabaseHelper.TABLE_NAME; // Temizlenecek tablo adı
+
+        db.delete(tableName, null, null);
+        db.close();
     }
 }

@@ -1,211 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#4F97A3">
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="265dp"
-        android:layout_height="90dp"
-        android:text="CREATE \nNEW TASK"
-        android:textColor="@color/white"
-        android:textSize="35dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.109"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.097"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/organiseTask"
-        android:layout_width="359dp"
-        android:layout_height="53dp"
-        android:backgroundTint="#cfe8ef"
-        android:background="@drawable/rounded_corners"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:text="Title"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.227"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/organiseNotes"
-        android:layout_width="359dp"
-        android:layout_height="62dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#cfe8ef"
-        android:gravity="top"
-        android:minHeight="48dp"
-        android:text="Notes "
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="226dp"
-        android:layout_height="43dp"
-        android:text="SET CHRONOMETER "
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735" />
-
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="320dp"
-        android:layout_height="195dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#70c1b3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.564" />
 
     <LinearLayout
-        android:layout_width="259dp"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
+        android:layout_width="388dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="#4F97A3"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.821">
+        app:layout_constraintVertical_bias="0.538">
 
-        <LinearLayout
-            android:layout_width="122dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="55dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_arrow_left_svgrepo_com"
+            app:backgroundTint="#EDECEF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:text="MINUTE "
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/minute"
-                android:layout_width="95dp"
-                android:layout_height="38dp"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="#cfe8ef"
-                android:ems="10"
-                android:inputType="phone"
-                android:textColor="@color/black"
-                android:textSize="8dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="121dp"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="CREATE \nNEW TASK"
+            android:textColor="@color/white"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.109"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.097"
+            tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/secondd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:gravity="center"
-                android:text="SECOND "
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <EditText
+            android:id="@+id/organiseTask"
+            android:layout_width="341dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#cfe8ef"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:text="Title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.227"
+            tools:ignore="MissingConstraints" />
 
-            <EditText
-                android:id="@+id/second"
-                android:layout_width="95dp"
-                android:layout_height="38dp"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corners"
-                android:backgroundTint="#cfe8ef"
-                android:ems="10"
-                android:inputType="phone"
-                android:textColor="@color/black"
-                android:textSize="8dp" />
+        <EditText
+            android:id="@+id/organiseNotes"
+            android:layout_width="340dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#cfe8ef"
+            android:gravity="top"
+            android:minHeight="48dp"
+            android:text="Notes "
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.31" />
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="226dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="25dp"
+            android:text="SET DATE "
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.735" />
+
+        <LinearLayout
+            android:layout_width="268dp"
+            android:layout_height="79dp"
+
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="117dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="DAY "
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="#cfe8ef"
+                    android:entries="@array/day31" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="118dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="   MONTH "
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerMont"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="#cfe8ef"
+                    android:entries="@array/months" />
+                />
+            </LinearLayout>
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="226dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="25dp"
+            android:text="SET CHOROMETER "
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.386" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="268dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.434"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.821">
+
+            <LinearLayout
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:text="MINUTE "
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="95dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="#cfe8ef"
+                    android:dropDownHeight="2dp"
+                    android:entries="@array/veri_kaynagi"
+                    app:layout_constraintBottom_toTopOf="@+id/textView3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="121dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/secondd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:gravity="center"
+                    android:text="SECOND "
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <Spinner
+                    android:id="@+id/second"
+                    android:layout_width="95dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="#cfe8ef"
+                    android:dropDownHeight="2dp"
+                    android:entries="@array/veri_kaynagi"
+                    app:layout_constraintBottom_toTopOf="@+id/textView3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="253dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/btn_background"
+            android:backgroundTint="#70c1b3"
+            android:drawableLeft="@drawable/plus"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:text="CREATE TASK "
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.455"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.959"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="226dp"
-        android:layout_height="43dp"
-        android:text="SET DATE "
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386" />
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="253dp"
-        android:layout_height="52dp"
-        android:background="@drawable/btn_background"
-        android:drawableLeft="@drawable/plus"
-        android:drawablePadding="0dp"
-        android:gravity="center_vertical"
-        android:paddingStart="18dp"
-        android:text="CREATE TASK "
-        android:textColor="@color/white"
-        android:textSize="25dp"
-        android:backgroundTint="#70c1b3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.417"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959"
-        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_weight="1"
-        android:background="@drawable/ic_arrow_left_svgrepo_com"
-        app:backgroundTint="#EDECEF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.039"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="TouchTargetSizeCheck" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

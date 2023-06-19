@@ -2,52 +2,57 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="400dp"
     android:layout_height="500dp"
     android:backgroundTint="#4F97A3"
+    android:layout_gravity="center"
     android:background="@drawable/rounded_corners"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="50dp">
+    android:layout_marginBottom="15dp"   >
 
 
     <TextView
         android:id="@+id/myTask"
         android:layout_width="321dp"
         android:layout_height="44dp"
-        android:backgroundTint="#cfe8ef"
         android:background="@drawable/rounded_corners"
+        android:backgroundTint="#cfe8ef"
         android:contentDescription="@string/app_name"
+        android:paddingLeft="15dp"
+        android:paddingTop="4dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
         android:scrollbars="vertical"
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintHorizontal_bias="0.341"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintVertical_bias="0.135" />
 
     <TextView
         android:id="@+id/notes"
-        android:layout_width="422dp"
-        android:layout_height="137dp"
+        android:layout_width="326dp"
+        android:layout_height="133dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:backgroundTint="#cfe8ef"
         android:background="@drawable/rounded_corners"
+        android:backgroundTint="#cfe8ef"
         android:contentDescription="@string/app_name"
         android:gravity="top"
+        android:paddingLeft="15dp"
+        android:paddingTop="8dp"
+        android:paddingRight="15dp"
         android:paddingBottom="10dp"
         android:scrollbars="vertical"
         android:text=" "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.787" />
+        app:layout_constraintVertical_bias="0.745" />
 
     <TextView
         android:id="@+id/counter"
@@ -60,70 +65,44 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.268" />
-
-    <ImageButton
-        android:id="@+id/timerStar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="#70c1b3"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/cont"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
-
-    <ImageButton
-        android:id="@+id/timerReset"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="#70c1b3"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/reset"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.823"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
-
-    <ImageButton
-        android:id="@+id/timerStop"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/btn_background"
-        android:backgroundTint="#70c1b3"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/stop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.664"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintVertical_bias="0.273" />
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="279dp"
-        android:layout_height="81dp"
-        android:text="DATE \n"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
         android:backgroundTint="#cfe8ef"
-        android:background="@drawable/rounded_corners"
-        android:textSize="20dp"
+        android:gravity="left"
+        android:text="01/01"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.463" />
+        app:layout_constraintVertical_bias="0.453" />
+
+    <TextView
+        android:id="@+id/date2"
+        android:layout_width="126dp"
+        android:layout_height="57dp"
+        android:backgroundTint="#cfe8ef"
+        android:gravity="left"
+        android:text="Date"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.452" />
 
     <Switch
         android:id="@+id/switch1"
@@ -136,6 +115,48 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.014"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <LinearLayout
+        android:layout_width="151dp"
+        android:layout_height="49dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.297">
+
+        <ImageButton
+            android:id="@+id/timerStar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_background"
+            android:backgroundTint="#70c1b3"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/cont" />
+
+        <ImageButton
+            android:id="@+id/timerStop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+
+            android:background="@drawable/btn_background"
+            android:backgroundTint="#70c1b3"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/stop" />
+
+        <ImageButton
+            android:id="@+id/timerReset"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/btn_background"
+            android:backgroundTint="#70c1b3"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/reset" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

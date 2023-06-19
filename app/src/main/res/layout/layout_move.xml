@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  >
+    >
 
     <LinearLayout
-        android:layout_width="329dp"
-        android:layout_height="513dp"
+        android:layout_width="360dp"
+        android:layout_height="444dp"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/teal_200"
+        android:backgroundTint="#4F97A3"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,14 +19,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.302">
 
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="57dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_arrow_left_svgrepo_com"
+            android:minHeight="48dp"
+            android:text=""
+            android:textColor="@color/white"
+            app:backgroundTint="@color/white"
+            tools:ignore="TouchTargetSizeCheck" />
+
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="154dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text=" EDIT \n YOUR TASK"
             android:textColor="@color/white"
-            android:textSize="25dp"
+            android:textSize="35dp"
             android:textStyle="bold" />
 
         <EditText
@@ -39,7 +55,7 @@
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text=""
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <EditText
@@ -52,46 +68,23 @@
             android:gravity="top"
             android:minHeight="48dp"
             android:text=""
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:layout_marginTop="155dp"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="252dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_background"
+            android:minHeight="48dp"
+            android:text=" EDIT YOUR TASK "
+            android:textColor="@color/white"
+            app:backgroundTint="#70c1b3"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/deleteButton"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_background"
-                android:minHeight="48dp"
-                android:text="DELETE"
-                android:textColor="@color/white"
-                app:backgroundTint="#2D02AA"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <Button
-                android:id="@+id/editButton"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="25dp"
-                android:background="@drawable/btn_background"
-                android:minHeight="48dp"
-                android:text="EDIT"
-                android:textColor="@color/white"
-                app:backgroundTint="#2D02AA"
-                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
